@@ -1,8 +1,9 @@
-//importa express
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const router = require ("./routes")
+const dbConection = require('./database/db')
 
 const app = express()
 
@@ -13,11 +14,16 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false})) //se utiliza para analizar las soliciudes entrantes con datos decodificado en la url. ej: formulaeio x-www.form-urlebcided
 app.use(morgan("dev"))
 
-app.use("/", router);
+//configuracion de rutas
+app.use(process.env.API, router);
 
-//al ultimo
-port= 8080;
+//puerto
+const port = process.env.PORT;
+
+
+// conexion a base de datos
+dbConection();
 
 app.listen(port , ()=> {
-    console.log("El servidor esta funcionando en el puerto 123", port)
+    console.log("El servidor esta funcionando en el puerto", port)
 })
